@@ -3,33 +3,35 @@ const { User } = require('../../models');
 
 // GET /api/users
 router.get('/', (req, res) => {
-     //access our user model and run findall method
-    User.findAll()
-    .then(dbUserData => res.json(dbUserData))
-    .catch(err => {
-        console.log(err);
-        res.status(500).json(err);
-    })
+    User.findAll({
+        attributes: { exclude: ['password'] }
+      })
+        .then(dbUserData => res.json(dbUserData))
+        .catch(err => {
+          console.log(err);
+          res.status(500).json(err);
+        });
 });
    
 // GET /api/users/1
 router.get('/:id', (req, res) => {
     User.findOne({
+        attributes: { exclude: ['password'] },
         where: {
-            id: req.params.id
+          id: req.params.id
         }
-    })
-    .then(dbuUserData => {
-        if(!dbuUserData) {
-            res.status(404).json({ message: 'no user with this id'});
+      })
+        .then(dbUserData => {
+          if (!dbUserData) {
+            res.status(404).json({ message: 'No user found with this id' });
             return;
-        }
-        res.json(dbuUserData);
-    })
-    .catch(err => {
-        console.log(err);
-        res.status(500).json(err);
-    })
+          }
+          res.json(dbUserData);
+        })
+        .catch(err => {
+          console.log(err);
+          res.status(500).json(err);
+        });
 });
 
 // POST /api/users
@@ -39,12 +41,10 @@ router.post('/', (req, res) => {
         email: req.body.email,
         password: req.body.password
     })
-    .then(dbUserData => {
-        res.json(dbUserData)
+    .then(dbUserData => res.json(dbUserData))
         .catch(err => {
             console.log(err);
             res.status(500).json(err);
-        });
     });
 });
 
@@ -71,20 +71,21 @@ router.put('/:id', (req, res) => {
 // DELETE /api/users/1
 router.delete('/:id', (req, res) => {
     User.destroy({
-        where: {
-            id: req.params.id
-        }
+      where: {
+        id: req.params.id
+      }
     })
-    .then(dbUserData => {
+      .then(dbUserData => {
         if (!dbUserData) {
-            res.status(404).json ({ message:'no user found with this id' });
-            return
+          res.status(404).json({ message: 'No user found with this id' });
+          return;
         }
         res.json(dbUserData);
-    }).catch (err => {
+      })
+      .catch(err => {
         console.log(err);
         res.status(500).json(err);
-    });
-});
+      });
+  });
 
 module.exports = router;
