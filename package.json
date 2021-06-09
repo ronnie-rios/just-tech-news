@@ -17,5 +17,13 @@
   "bugs": {
     "url": "https://github.com/ronnie-rios/just-tech-news/issues"
   },
-  "homepage": "https://github.com/ronnie-rios/just-tech-news#readme"
+  "homepage": "https://github.com/ronnie-rios/just-tech-news#readme",
+  "dependencies": {
+    "bcrypt": "^5.0.1",
+    "dotenv": "^10.0.0",
+    "env": "^0.0.2",
+    "express": "^4.17.1",
+    "mysql2": "^2.2.5",
+    "sequelize": "^6.6.2"
+  }
 }
